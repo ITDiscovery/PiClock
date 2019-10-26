@@ -20,6 +20,9 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(16,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 GPIO.setup(18,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 GPIO.setup(22,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+# Setup for BME280
+smbus = smbus2.SMBus(1)
+calibration_params = bme280.load_calibration_params(smbus, 0x76)
 
 from PyQt4 import QtGui, QtCore, QtNetwork
 from PyQt4.QtGui import QPixmap, QBrush, QColor
@@ -50,7 +53,7 @@ def tick():
 
     now = datetime.datetime.now()
     #Start looking for button here
-    #Check for Green GPIO (22) Switch
+    #Check for Green GPIO (25) Switch
     if GPIO.input(22)==False:
         if time.time() > lastkeytime:
             if weatherplayer is None:
@@ -60,9 +63,16 @@ def tick():
                 weatherplayer.kill()
                 weatherplayer = None
                 lastkeytime = time.time() + 2
-    #Check for Yellow GPIO (18) Switch
+    #Check for Yellow GPIO (24) Switch
     if GPIO.input(18)==False:
         nextframe(1)
+
+    #Check for the Red GPIO (23) Switch
+    if GPIO.input(16)==False:
+        if foreGround.isVisible():
+            foreGround.hide()
+        else:
+            foreGround.show()
 
     #Start clock update
     if Config.digital:
@@ -249,8 +259,11 @@ def gettemp():
     r = QNetworkRequest(r)
     tempreply = manager.get(r)
     tempreply.finished.connect(tempfinished)
-    intemp,inpress,inhumid = bme280.readBME280All(0x76)
-    print(bme280.readBME280All(0x76))
+    envdata = bme280.sample(smbus, 0x76, calibration_params)
+    intemp = envdata.temperature
+    inpress = envdata.pressure
+    inhumid = envdata.humidity
+    print(envdata)
 
 def wxfinished():
     global wxreply, wxdata
@@ -1125,10 +1138,10 @@ w.setWindowTitle(os.path.basename(__file__))
 
 w.setStyleSheet("QWidget { background-color: black;}")
 
-# fullbgpixmap = QtGui.QPixmap(Config.background)
-# fullbgrect = fullbgpixmap.rect()
-# xscale = float(width)/fullbgpixmap.width()
-# yscale = float(height)/fullbgpixmap.height()
+#fullbgpixmap = QtGui.QPixmap(Config.background)
+#fullbgrect = fullbgpixmap.rect()
+#xscale = float(width)/fullbgpixmap.width()
+#yscale = float(height)/fullbgpixmap.height()
 
 xscale = float(width) / 1440.0
 yscale = float(height) / 900.0
@@ -1147,6 +1160,7 @@ if Config.useslideshow:
     imgRect = QtCore.QRect(0, 0, width, height)
     objimage1 = SS(frame1, imgRect, "image1")
 
+#Second Screen: 3 Widgets, 2 radar and one display
 frame2 = QtGui.QFrame(w)
 frame2.setObjectName("frame2")
 frame2.setGeometry(0, 0, width, height)
@@ -1155,13 +1169,14 @@ frame2.setStyleSheet("#frame2 { background-color: blue; border-image: url(" +
 frame2.setVisible(False)
 frames.append(frame2)
 
-#frame3 = QtGui.QFrame(w)
-#frame3.setObjectName("frame3")
-#frame3.setGeometry(0,0,width,height)
-#frame3.setStyleSheet("#frame3 { background-color: blue; border-image:
-#       url("+Config.background+") 0 0 0 0 stretch stretch;}")
-#frame3.setVisible(False)
-#frames.append(frame3)
+#Third Screen: 2 Widgets, 1 radar and one display
+frame3 = QtGui.QFrame(w)
+frame3.setObjectName("frame3")
+frame3.setGeometry(0,0,width,height)
+frame3.setStyleSheet("#frame3 { background-color: blue; border-image: url(" + 
+                     Config.background+") 0 0 0 0 stretch stretch;}")
+frame3.setVisible(False)
+frames.append(frame3)
 
 foreGround = QtGui.QFrame(frame1)
 foreGround.setObjectName("foreGround")
@@ -1246,7 +1261,7 @@ else:
     glow.setColor(QColor(dcolor))
     clockface.setGraphicsEffect(glow)
 
-
+# Places the radar on the frame QtCore.QRect( X1,Y1,X2,Y2)
 radar1rect = QtCore.QRect(3 * xscale, 344 * yscale, 300 * xscale, 275 * yscale)
 objradar1 = Radar(foreGround, Config.radar1, radar1rect, "radar1")
 
@@ -1256,10 +1271,11 @@ objradar2 = Radar(foreGround, Config.radar2, radar2rect, "radar2")
 radar3rect = QtCore.QRect(13 * xscale, 50 * yscale, 700 * xscale, 700 * yscale)
 objradar3 = Radar(frame2, Config.radar3, radar3rect, "radar3")
 
-radar4rect = QtCore.QRect(726 * xscale, 50 * yscale,
-                          700 * xscale, 700 * yscale)
+radar4rect = QtCore.QRect(726 * xscale, 50 * yscale, 700 * xscale, 700 * yscale)
 objradar4 = Radar(frame2, Config.radar4, radar4rect, "radar4")
 
+#radar5rect = QtCore.QRect(13 * xscale, 50 * yscale,  1400 * xscale, 1400 * yscale)
+#objradar5 = Radar(frame3, Config.radar5, radar5rect, "radar5")
 
 datex = QtGui.QLabel(foreGround)
 datex.setObjectName("datex")

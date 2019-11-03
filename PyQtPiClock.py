@@ -67,12 +67,9 @@ def tick():
     if GPIO.input(18)==False:
         nextframe(1)
 
-    #Check for the Red GPIO (23) Switch
-    if GPIO.input(16)==False:
-        if foreGround.isVisible():
-            foreGround.hide()
-        else:
-            foreGround.show()
+    #Check for the Red GPIO (23) Switch - Reboot Here?? 
+    #if GPIO.input(16)==False:
+
 
     #Start clock update
     if Config.digital:
@@ -253,22 +250,22 @@ def bearing(f):
 def gettemp():
     global tempreply,intemp,inpress,inhumid
     host = 'localhost'
-    if platform.uname()[1] == 'KW81':
-        host = 'piclock.local'  # this is here just for testing
+    #if platform.uname()[1] == 'KW81':
+    #    host = 'piclock.local'  # this is here just for testing
     r = QUrl('http://' + host + ':48213/temp')
     r = QNetworkRequest(r)
     tempreply = manager.get(r)
     tempreply.finished.connect(tempfinished)
     envdata = bme280.sample(smbus, 0x76, calibration_params)
-    intemp = envdata.temperature
-    inpress = envdata.pressure
+    intemp = envdata.temperature*1.8+32
+    inpress = envdata.pressure/33.864
     inhumid = envdata.humidity
     print(envdata)
 
 def wxfinished():
     global wxreply, wxdata
     global wxicon, temper, wxdesc, press, humidity
-    global wind, wind2, wdate, bottom, forecast
+    global wind, wind2, wdate, bottom, bottom3in, bottom3out,forecast
     global wxicon2, temper2, wxdesc, attribution
 
     attribution.setText("DarkSky.net")
@@ -292,7 +289,7 @@ def wxfinished():
     if Config.metric:
         temper.setText('%.1f' % (tempm(f['temperature'])) + u'°C')
         temper2.setText('%.1f' % (tempm(f['temperature'])) + u'°C')
-        press.setText(Config.LPressure + '%.1f' % f['pressure'] + 'mb')
+        press.setText(Config.LPressure + '%.1f' % f['pressure'] + ' mb')
         humidity.setText(Config.LHumidity + '%.0f%%' % (f['humidity']*100.0))
         wd = bearing(f['windBearing'])
         if Config.wind_degrees:
@@ -311,7 +308,7 @@ def wxfinished():
     else:
         temper.setText('%.1f' % (f['temperature']) + u'°F')
         temper2.setText('%.1f' % (f['temperature']) + u'°F')
-        press.setText(Config.LPressure + '%.2f' % pressi(f['pressure']) + 'in')
+        press.setText(Config.LPressure + '%.2f' % pressi(f['pressure']) + ' in')
         humidity.setText(Config.LHumidity + '%.0f%%' % (f['humidity']*100.0))
         wd = bearing(f['windBearing'])
         if Config.wind_degrees:
@@ -323,12 +320,11 @@ def wxfinished():
                      '%.1f' % (f['windGust']) + 'mph')
         wind2.setText(Config.LFeelslike +
                       '%.1f' % (f['apparentTemperature']) + u'°F')
-        wdate.setText("{0:%H:%M}".format(datetime.datetime.fromtimestamp(
-            int(f['time']))))
+        #wdate.setText("{0:%H:%M}".format(datetime.datetime.fromtimestamp(int(f['time']))))
 # Config.LPrecip1hr + f['precip_1hr_in'] + 'in ' +
 # Config.LToday + f['precip_today_in'] + 'in')
 
-#This is the start of the the bottom center
+#This is the start of the the bottom center frame1
     bottomText = ""
     if "sunriseTime" in wxdata["daily"]["data"][0]:
         bottomText += (Config.LSunRise +
@@ -343,6 +339,15 @@ def wxfinished():
                        phase(wxdata["daily"]["data"][0]["moonPhase"]))
 
     bottom.setText(bottomText)
+
+# This is for the bottom frame3 inside
+    bottomText = "Inside Temp:" + str.format("{:.2f}",intemp) + "\xB0F\n"
+    bottomText += "Indside Pressure:" + str.format("{:.2f}",inpress) +"mb\n"
+    bottomText += "Inside Humidity:" + str.format("{:.2f}",inhumid) + "%"
+    bottom3in.setText(bottomText)
+
+# This is for the bottom frame3 outside
+    bottom3out.setText("This is a test!")
 
 # This is for the top 3 boxes on the right
     for i in range(0, 3):
@@ -390,8 +395,8 @@ def wxfinished():
                     s += Config.LRain + '%.0f' % paccum + 'in '
             s += '%.0f' % (f['temperature']) + u'°F'
 
-	# Font size for first three boxes
-        wx.setStyleSheet("#wx { font-size: " + str(int(40 * xscale)) + "px; }")
+    # Font size for first three boxes
+        wx.setStyleSheet("#wx { font-size: " + str(int(25 * xscale)) + "px; }")
         wx.setText(f['summary'] + "\n" + s)
 
     #Code begins for next 5 boxes on the right
@@ -409,7 +414,7 @@ def wxfinished():
         day = fl.findChild(QtGui.QLabel, "day")
         day.setText("{0:%A}".format(datetime.datetime.fromtimestamp(
             int(f['time']))))
-        s = ''
+        s = 'Precip: '
         pop = 0
         ptype = ''
         paccum = 0
@@ -419,9 +424,8 @@ def wxfinished():
             paccum = float(f['precipAccumulation'])
         if ('precipType' in f):
             ptype = f['precipType']
-
         if (pop > 0.05 or ptype != ''):
-            s += '%.0f' % pop + '% '
+            s += '%.0f' % pop + '% \nTemp: '
         if Config.metric:
             if (ptype == 'snow'):
                 if (paccum > 0.05):
@@ -429,8 +433,8 @@ def wxfinished():
             else:
                 if (paccum > 0.05):
                     s += Config.LRain + '%.0f' % heightm(paccum) + 'mm '
-            s += '%.0f' % tempm(f['temperatureHigh']) + '/' + \
-                 '%.0f' % tempm(f['temperatureLow'])
+            s += '%.0f' % tempm(f['temperatureHigh']) + '\xB0/' + \
+                 '%.0f' % tempm(f['temperatureLow']) + '\xB0F'
         else:
             if (ptype == 'snow'):
                 if (paccum > 0.05):
@@ -438,10 +442,10 @@ def wxfinished():
             else:
                 if (paccum > 0.05):
                     s += Config.LRain + '%.1f' % paccum + 'in '
-            s += '%.0f' % f['temperatureHigh'] + '/' + \
-                 '%.0f' % f['temperatureLow']
-        wx.setStyleSheet("#wx { font-size: " + str(int(30 * xscale)) + "px; }")
-        wx.setText(f['summary'] + "\n" + s)
+            s += '%.0f' % f['temperatureHigh'] + '\xB0/' + \
+                 '%.0f' % f['temperatureLow'] + '\xB0F'
+        wx.setStyleSheet("#wx { font-size: " + str(int(25 * xscale)) + "px; }")
+        wx.setText(s)
 
 def getwx():
     global wxurl
@@ -472,6 +476,7 @@ def qtstart():
     global objradar2
     global objradar3
     global objradar4
+    global objradar5
 
     getallwx()
 
@@ -483,6 +488,7 @@ def qtstart():
     objradar2.wxstart()
     objradar3.start(Config.radar_refresh * 60)
     objradar4.start(Config.radar_refresh * 60)
+    objradar5.start(Config.radar_refresh * 60)
 
     ctimer = QtCore.QTimer()
     ctimer.timeout.connect(tick)
@@ -925,13 +931,14 @@ def realquit():
 
 
 def myquit(a=0, b=0):
-    global objradar1, objradar2, objradar3, objradar4
+    global objradar1, objradar2, objradar3, objradar4, objradar5
     global ctimer, wtimer, temptimer
 
     objradar1.stop()
     objradar2.stop()
     objradar3.stop()
     objradar4.stop()
+    objradar5.stop()
     ctimer.stop()
     wxtimer.stop()
     temptimer.stop()
@@ -1149,31 +1156,35 @@ yscale = float(height) / 900.0
 frames = []
 framep = 0
 
+# First screen, which will contain squares1, squares2, clockface, radar1rect
+# radar2rect, datex, datex2
 frame1 = QtGui.QFrame(w)
 frame1.setObjectName("frame1")
 frame1.setGeometry(0, 0, width, height)
-frame1.setStyleSheet("#frame1 { background-color: black; border-image: url(" +
+frame1.setStyleSheet("#frame1 { background-color: grey; border-image: url(" +
                      Config.background + ") 0 0 0 0 stretch stretch;}")
 frames.append(frame1)
+
 
 if Config.useslideshow:
     imgRect = QtCore.QRect(0, 0, width, height)
     objimage1 = SS(frame1, imgRect, "image1")
 
-#Second Screen: 3 Widgets, 2 radar and one display
+#Second Screen: radar3rect, radar4rect, datex2, attribution2, wxicon2, wxdescr2, temper2
 frame2 = QtGui.QFrame(w)
 frame2.setObjectName("frame2")
 frame2.setGeometry(0, 0, width, height)
-frame2.setStyleSheet("#frame2 { background-color: blue; border-image: url(" +
+frame2.setStyleSheet("#frame2 { background-color: grey; border-image: url(" +
                      Config.background + ") 0 0 0 0 stretch stretch;}")
 frame2.setVisible(False)
 frames.append(frame2)
 
-#Third Screen: 2 Widgets, 1 radar and one display
+#Third Screen: radar5rect, attribution3, bottom3in and bottom3out,
+#which contains sensor data from inside and outside.
 frame3 = QtGui.QFrame(w)
 frame3.setObjectName("frame3")
 frame3.setGeometry(0,0,width,height)
-frame3.setStyleSheet("#frame3 { background-color: blue; border-image: url(" + 
+frame3.setStyleSheet("#frame3 { background-color: grey ; border-image: url(" + 
                      Config.background+") 0 0 0 0 stretch stretch;}")
 frame3.setVisible(False)
 frames.append(frame3)
@@ -1261,7 +1272,7 @@ else:
     glow.setColor(QColor(dcolor))
     clockface.setGraphicsEffect(glow)
 
-# Places the radar on the frame QtCore.QRect( X1,Y1,X2,Y2)
+# Places the radar on the frame QtCore.QRect(X1,Y1,X2,Y2)
 radar1rect = QtCore.QRect(3 * xscale, 344 * yscale, 300 * xscale, 275 * yscale)
 objradar1 = Radar(foreGround, Config.radar1, radar1rect, "radar1")
 
@@ -1274,9 +1285,10 @@ objradar3 = Radar(frame2, Config.radar3, radar3rect, "radar3")
 radar4rect = QtCore.QRect(726 * xscale, 50 * yscale, 700 * xscale, 700 * yscale)
 objradar4 = Radar(frame2, Config.radar4, radar4rect, "radar4")
 
-#radar5rect = QtCore.QRect(13 * xscale, 50 * yscale,  1400 * xscale, 1400 * yscale)
-#objradar5 = Radar(frame3, Config.radar5, radar5rect, "radar5")
+radar5rect = QtCore.QRect(63 * xscale, 50 * yscale,  1300 * xscale, 700 * yscale)
+objradar5 = Radar(frame3, Config.radar5, radar5rect, "radar5")
 
+#.setGeometry(X1,Y1,width,height)
 datex = QtGui.QLabel(foreGround)
 datex.setObjectName("datex")
 datex.setStyleSheet("#datex { font-family:sans-serif; color: " +
@@ -1299,6 +1311,7 @@ datex2.setStyleSheet("#datex2 { font-family:sans-serif; color: " +
                      "}")
 datex2.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 datex2.setGeometry(800 * xscale, 780 * yscale, 640 * xscale, 100)
+
 datey2 = QtGui.QLabel(frame2)
 datey2.setObjectName("datey2")
 datey2.setStyleSheet("#datey2 { font-family:sans-serif; color: " +
@@ -1343,6 +1356,19 @@ attribution2.setStyleSheet("#attribution2 { " +
 attribution2.setAlignment(Qt.AlignTop)
 attribution2.setGeometry(6 * xscale, 880 * yscale, 100 * xscale, 100)
 
+attribution3 = QtGui.QLabel(frame3)
+attribution3.setObjectName("attribution3")
+attribution3.setStyleSheet("#attribution3 { " +
+                           "background-color: transparent; color: " +
+                           Config.textcolor +
+                           "; font-size: " +
+                           str(int(12 * xscale)) +
+                           "px; " +
+                           Config.fontattr +
+                           "}")
+attribution3.setAlignment(Qt.AlignTop)
+attribution3.setGeometry(6 * xscale, 880 * yscale, 100 * xscale, 100)
+
 wxicon2 = QtGui.QLabel(frame2)
 wxicon2.setObjectName("wxicon2")
 wxicon2.setStyleSheet("#wxicon2 { background-color: transparent; }")
@@ -1379,7 +1405,7 @@ temper.setObjectName("temper")
 temper.setStyleSheet("#temper { font-weight:bold; background-color: transparent; color: " +
                      Config.textcolor +
                      "; font-size: " +
-                     str(int(60 * xscale)) +
+                     str(int(50 * xscale)) +
                      "px; " +
                      Config.fontattr +
                      "}")
@@ -1398,49 +1424,49 @@ temper2.setStyleSheet("#temper2 { font-weight: bold; background-color: transpare
 temper2.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 temper2.setGeometry(125 * xscale, 780 * yscale, 300 * xscale, 100)
 
-ypos += 80
+ypos += 60
 press = QtGui.QLabel(foreGround)
 press.setObjectName("press")
 press.setStyleSheet("#press { font-weight: bold; background-color: transparent; color: " +
                     Config.textcolor +
                     "; font-size: " +
-                    str(int(35 * xscale)) +
+                    str(int(30 * xscale)) +
                     "px; " +
                     Config.fontattr +
                     "}")
 press.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 press.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
 
-ypos += 30
+ypos += 35
 humidity = QtGui.QLabel(foreGround)
 humidity.setObjectName("humidity")
 humidity.setStyleSheet("#humidity { font-weight: bold; background-color: transparent; color: " +
                        Config.textcolor +
                        "; font-size: " +
-                       str(int(35 * xscale)) +
+                       str(int(30 * xscale)) +
                        "px; " +
                        Config.fontattr +
                        "}")
 humidity.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 humidity.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
 
-ypos += 30
+ypos += 35
 wind = QtGui.QLabel(foreGround)
 wind.setObjectName("wind")
-wind.setStyleSheet("#wind { background-color: transparent; color: " +
+wind.setStyleSheet("#wind { font-weight: bold; background-color: transparent; color: " +
                    Config.textcolor +
                    "; font-size: " +
-                   str(int(30 * xscale)) +
+                   str(int(25 * xscale)) +
                    "px; " +
                    Config.fontattr +
                    "}")
 wind.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 wind.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
 
-ypos += 20
+ypos += 35
 wind2 = QtGui.QLabel(foreGround)
 wind2.setObjectName("wind2")
-wind2.setStyleSheet("#wind2 { background-color: transparent; color: " +
+wind2.setStyleSheet("#wind2 { font-weight: bold; background-color: transparent; color: " +
                     Config.textcolor +
                     "; font-size: " +
                     str(int(20 * xscale)) +
@@ -1450,18 +1476,19 @@ wind2.setStyleSheet("#wind2 { background-color: transparent; color: " +
 wind2.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 wind2.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
 
-ypos += 20
-wdate = QtGui.QLabel(foreGround)
-wdate.setObjectName("wdate")
-wdate.setStyleSheet("#wdate { background-color: transparent; color: " +
-                    Config.textcolor +
-                    "; font-size: " +
-                    str(int(25 * xscale)) +
-                    "px; " +
-                    Config.fontattr +
-                    "}")
-wdate.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
-wdate.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
+ypos += 25
+# This is an extra date/time panel (Good for if you have clock face)
+#wdate = QtGui.QLabel(foreGround)
+#wdate.setObjectName("wdate")
+#wdate.setStyleSheet("#wdate { background-color: transparent; color: " +
+#                    Config.textcolor +
+#                    "; font-size: " +
+#                    str(int(25 * xscale)) +
+#                    "px; " +
+#                    Config.fontattr +
+#                    "}")
+#wdate.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
+#wdate.setGeometry(3 * xscale, ypos * yscale, 300 * xscale, 100)
 
 bottom = QtGui.QLabel(foreGround)
 bottom.setObjectName("bottom")
@@ -1473,7 +1500,32 @@ bottom.setStyleSheet("#bottom { font-family:sans-serif; color: " +
                      Config.fontattr +
                      "}")
 bottom.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
-bottom.setGeometry(0, height - 50, width, 50)
+#bottom.setGeometry(0, height - 50, width, 50)
+bottom.setGeometry(10 * xscale, height - (125 * yscale), width, 100 * yscale)
+
+bottom3in = QtGui.QLabel(frame3)
+bottom3in.setObjectName("bottom3in")
+bottom3in.setStyleSheet("#bottom3in { font-family:sans-serif; color: " +
+                     Config.textcolor +
+                     "; background-color: transparent; font-size: " +
+                     str(int(25 * xscale)) +
+                     "px; " +
+                     Config.fontattr +
+                     "}")
+bottom3in.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+bottom3in.setGeometry(10 * xscale, height - (125 * yscale), width/2, 100 * yscale)
+
+bottom3out = QtGui.QLabel(frame3)
+bottom3out.setObjectName("bottom3out")
+bottom3out.setStyleSheet("#bottom3out { font-family:sans-serif; color: " +
+                     Config.textcolor +
+                     "; background-color: transparent; font-size: " +
+                     str(int(15 * xscale)) +
+                     "px; " +
+                     Config.fontattr +
+                     "}")
+bottom3out.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+bottom3out.setGeometry((width/2) + (10 * xscale), height - (125 * yscale), (width/2)-(30*xscale) , 100 * yscale)
 
 temp = QtGui.QLabel(foreGround)
 temp.setObjectName("temp")
@@ -1485,7 +1537,7 @@ temp.setStyleSheet("#temp { font-family:sans-serif; color: " +
                    Config.fontattr +
                    "}")
 temp.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
-temp.setGeometry(0, height - 100, width, 50)
+temp.setGeometry(0, height-100, width, 50)
 
 
 ## The 9 boxes on the side
@@ -1500,8 +1552,7 @@ for i in range(0, 9):
                       "px; " +
                       Config.fontattr +
                       "}")
-    lab.setGeometry(1137 * xscale, i * 100 * yscale,
-                    300 * xscale, 100 * yscale)
+    lab.setGeometry(1137 * xscale, i * 100 * yscale, 300 * xscale, 100 * yscale)
 
     icon = QtGui.QLabel(lab)
     icon.setStyleSheet("#icon { background-color: transparent; }")

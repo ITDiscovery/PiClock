@@ -6,6 +6,8 @@ from PyQt4.QtGui import QColor
 # Further radar configuration (zoom, marker location) can be
 # completed under the RADAR section
 primary_coordinates = 32.826673, -97.232324  # Change to your Lat/Lon
+#primary_coordinates = 42.826673, -85.7025  # Change to your Lat/Lon
+
 
 location = LatLng(primary_coordinates[0], primary_coordinates[1])
 primary_location = LatLng(primary_coordinates[0], primary_coordinates[1])
@@ -183,7 +185,7 @@ radar4 = {
 
 radar5 = {
     'center': primary_location,
-    'zoom': 11,
+    'zoom': 9,
     'style': 'mapbox/satellite-streets-v10',
     'color': 6,
     'smooth': 1,

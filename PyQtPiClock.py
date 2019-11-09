@@ -78,7 +78,7 @@ def tick():
             if timestr[0] == '0':
                 timestr = timestr[1:99]
         if lasttimestr != timestr:
-            clockface.setText(timestr.lower())
+            clockface.setText(timestr.upper())
         lasttimestr = timestr
     else:
         angle = now.second * 6
@@ -146,7 +146,6 @@ def tick():
 
     if now.day != lastday:
         lastday = now.day
-        # date
         sup = 'th'
         if (now.day == 1 or now.day == 21 or now.day == 31):
             sup = 'st'
@@ -250,8 +249,6 @@ def bearing(f):
 def gettemp():
     global tempreply,intemp,inpress,inhumid
     host = 'localhost'
-    #if platform.uname()[1] == 'KW81':
-    #    host = 'piclock.local'  # this is here just for testing
     r = QUrl('http://' + host + ':48213/temp')
     r = QNetworkRequest(r)
     tempreply = manager.get(r)
@@ -260,16 +257,17 @@ def gettemp():
     intemp = envdata.temperature*1.8+32
     inpress = envdata.pressure/33.864
     inhumid = envdata.humidity
-    print(envdata)
+    #print(envdata)
 
 def wxfinished():
     global wxreply, wxdata
     global wxicon, temper, wxdesc, press, humidity
     global wind, wind2, wdate, bottom, bottom3in, bottom3out,forecast
     global wxicon2, temper2, wxdesc, attribution
-
+    
     attribution.setText("DarkSky.net")
     attribution2.setText("DarkSky.net")
+    attribution3.setText("DarkSky.net")
 
     wxstr = str(wxreply.readAll())
     wxdata = json.loads(wxstr)
@@ -301,8 +299,7 @@ def wxfinished():
                      '%.1f' % (speedm(f['windGust'])) + 'kmh')
         wind2.setText(Config.LFeelslike +
                       '%.1f' % (tempm(f['apparentTemperature'])) + u'°C')
-        wdate.setText("{0:%H:%M}".format(datetime.datetime.fromtimestamp(
-            int(f['time']))))
+        #wdate.setText("{0:%H:%M}".format(datetime.datetime.fromtimestamp(int(f['time']))))
 # Config.LPrecip1hr + f['precip_1hr_metric'] + 'mm ' +
 # Config.LToday + f['precip_today_metric'] + 'mm')
     else:
@@ -337,17 +334,21 @@ def wxfinished():
     if "moonPhase" in wxdata["daily"]["data"][0]:
         bottomText += (Config.LMoonPhase +
                        phase(wxdata["daily"]["data"][0]["moonPhase"]))
-
     bottom.setText(bottomText)
 
 # This is for the bottom frame3 inside
-    bottomText = "Inside Temp:" + str.format("{:.2f}",intemp) + "\xB0F\n"
-    bottomText += "Indside Pressure:" + str.format("{:.2f}",inpress) +"mb\n"
-    bottomText += "Inside Humidity:" + str.format("{:.2f}",inhumid) + "%"
+    if Config.metric:
+        bottomText = "Inside Temp:" + str.format("{:.2f}",tempm(intemp)) + "\xB0C\n"
+        bottomText += "Indside Pressure:" + str.format("{:.2f}",(inpress/0.029530)) +" mb\n"
+        bottomText += "Inside Humidity:" + str.format("{:.2f}",inhumid) + "%"
+    else:
+        bottomText = "Inside Temp:" + str.format("{:.2f}",intemp) + "\xB0F\n"
+        bottomText += "Indside Pressure:" + str.format("{:.2f}",inpress) +" in\n"
+        bottomText += "Inside Humidity:" + str.format("{:.2f}",inhumid) + "%"
     bottom3in.setText(bottomText)
 
 # This is for the bottom frame3 outside
-    bottom3out.setText("This is a test!")
+    bottom3out.setText("bottom3out")
 
 # This is for the top 3 boxes on the right
     for i in range(0, 3):
@@ -395,7 +396,7 @@ def wxfinished():
                     s += Config.LRain + '%.0f' % paccum + 'in '
             s += '%.0f' % (f['temperature']) + u'°F'
 
-    # Font size for first three boxes
+        # Font size for first three boxes
         wx.setStyleSheet("#wx { font-size: " + str(int(25 * xscale)) + "px; }")
         wx.setText(f['summary'] + "\n" + s)
 
@@ -425,26 +426,26 @@ def wxfinished():
         if ('precipType' in f):
             ptype = f['precipType']
         if (pop > 0.05 or ptype != ''):
-            s += '%.0f' % pop + '% \nTemp: '
+            s += '%.0f' % pop + '% '
         if Config.metric:
             if (ptype == 'snow'):
                 if (paccum > 0.05):
-                    s += Config.LSnow + '%.0f' % heightm(paccum) + 'mm '
+                    s += Config.LSnow + '%.0f' % heightm(paccum) + ' mm'
             else:
                 if (paccum > 0.05):
-                    s += Config.LRain + '%.0f' % heightm(paccum) + 'mm '
-            s += '%.0f' % tempm(f['temperatureHigh']) + '\xB0/' + \
-                 '%.0f' % tempm(f['temperatureLow']) + '\xB0F'
+                    s += Config.LRain + '%.0f' % heightm(paccum) + ' mm'
+            s += '\nTemp: %.0f' % tempm(f['temperatureHigh']) + '\xB0/' + \
+                 '%.0f' % tempm(f['temperatureLow']) + '\xB0C'
         else:
             if (ptype == 'snow'):
                 if (paccum > 0.05):
-                    s += Config.LSnow + '%.1f' % paccum + 'in '
+                    s += Config.LSnow + '%.1f' % paccum + ' in'
             else:
                 if (paccum > 0.05):
-                    s += Config.LRain + '%.1f' % paccum + 'in '
-            s += '%.0f' % f['temperatureHigh'] + '\xB0/' + \
+                    s += Config.LRain + '%.1f' % paccum + ' in'
+            s += '\nTemp: %.0f' % f['temperatureHigh'] + '\xB0/' + \
                  '%.0f' % f['temperatureLow'] + '\xB0F'
-        wx.setStyleSheet("#wx { font-size: " + str(int(25 * xscale)) + "px; }")
+        wx.setStyleSheet("#wx { font-size: " + str(int(20 * xscale)) + "px; }")
         wx.setText(s)
 
 def getwx():
@@ -1077,13 +1078,13 @@ except AttributeError:
     Config.Lgusting = " gusting "
     Config.LFeelslike = "Feels like "
     Config.LPrecip1hr = " Precip 1hr:"
-    Config.LToday = "Today: "
+    Config.LToday = "Today:"
     Config.LSunRise = "Sun Rise:"
-    Config.LSet = " Set: "
+    Config.LSet = " Set:"
     Config.LMoonPhase = " Moon Phase:"
     Config.LInsideTemp = "Inside Temp "
-    Config.LRain = " Rain: "
-    Config.LSnow = " Snow: "
+    Config.LRain = " Rain:"
+    Config.LSnow = " Snow:"
 
 try:
     Config.Lmoon1
@@ -1157,7 +1158,7 @@ frames = []
 framep = 0
 
 # First screen, which will contain squares1, squares2, clockface, radar1rect
-# radar2rect, datex, datex2
+# radar2rect, datex
 frame1 = QtGui.QFrame(w)
 frame1.setObjectName("frame1")
 frame1.setGeometry(0, 0, width, height)
@@ -1170,7 +1171,7 @@ if Config.useslideshow:
     imgRect = QtCore.QRect(0, 0, width, height)
     objimage1 = SS(frame1, imgRect, "image1")
 
-#Second Screen: radar3rect, radar4rect, datex2, attribution2, wxicon2, wxdescr2, temper2
+#Second Screen: radar3rect, radar4rect, datex2, attribution2, wxicon2, wxdescr2, temper2, datex2
 frame2 = QtGui.QFrame(w)
 frame2.setObjectName("frame2")
 frame2.setGeometry(0, 0, width, height)
@@ -1214,7 +1215,7 @@ if not Config.digital:
     clockface = QtGui.QFrame(foreGround)
     clockface.setObjectName("clockface")
     clockrect = QtCore.QRect(
-        width / 2 - height * .4,
+        width / 2 - height * .40,
         height * .45 - height * .4,
         height * .8,
         height * .8)
@@ -1248,9 +1249,9 @@ else:
     clockface = QtGui.QLabel(foreGround)
     clockface.setObjectName("clockface")
     clockrect = QtCore.QRect(
-        width / 2 - height * .4,
+        width / 2 - height * .45,
         height * .45 - height * .4,
-        height * .8,
+        height * .9,
         height * .8)
     clockface.setGeometry(clockrect)
     dcolor = QColor(Config.digitalcolor).darker(0).name()
@@ -1354,7 +1355,7 @@ attribution2.setStyleSheet("#attribution2 { " +
                            Config.fontattr +
                            "}")
 attribution2.setAlignment(Qt.AlignTop)
-attribution2.setGeometry(6 * xscale, 880 * yscale, 100 * xscale, 100)
+attribution2.setGeometry(6 * xscale, 3 * yscale, 100 * xscale, 100)
 
 attribution3 = QtGui.QLabel(frame3)
 attribution3.setObjectName("attribution3")
@@ -1367,7 +1368,7 @@ attribution3.setStyleSheet("#attribution3 { " +
                            Config.fontattr +
                            "}")
 attribution3.setAlignment(Qt.AlignTop)
-attribution3.setGeometry(6 * xscale, 880 * yscale, 100 * xscale, 100)
+attribution3.setGeometry(6 * xscale, 3 * yscale, 100 * xscale, 100)
 
 wxicon2 = QtGui.QLabel(frame2)
 wxicon2.setObjectName("wxicon2")
@@ -1552,7 +1553,7 @@ for i in range(0, 9):
                       "px; " +
                       Config.fontattr +
                       "}")
-    lab.setGeometry(1137 * xscale, i * 100 * yscale, 300 * xscale, 100 * yscale)
+    lab.setGeometry(1087 * xscale, i * 100 * yscale, 450 * xscale, 100 * yscale)
 
     icon = QtGui.QLabel(lab)
     icon.setStyleSheet("#icon { background-color: transparent; }")
@@ -1561,7 +1562,7 @@ for i in range(0, 9):
 
     wx = QtGui.QLabel(lab)
     wx.setStyleSheet("#wx { background-color: transparent; }")
-    wx.setGeometry(100 * xscale, 5 * yscale, 200 * xscale, 120 * yscale)
+    wx.setGeometry(100 * xscale, 5 * yscale, 250 * xscale, 120 * yscale)
     wx.setAlignment(Qt.AlignLeft | Qt.AlignTop)
     wx.setWordWrap(True)
     wx.setObjectName("wx")

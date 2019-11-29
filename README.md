@@ -11,8 +11,8 @@ Call to 127.0.0.1/data/1.0/weather?=local
 
 API Response:
 
-{"coord": { "lon": -139,"lat": 35},
-  "main": {
+{"coord": { "lon": -139,"lat": 35},  
+  "main": {  
     "temp": 289.92,
     "pressure": 1009,
     "humidity": 92,
@@ -75,4 +75,4 @@ name City name
 
 
 2. Weewx does send to AWEKAS, so done.
-3. Write a reciever for PiClock that will read the RESTful scheme from AWEKAS.
+3. Write a reciever for PiClock that will read the RESTful scheme from local as above.

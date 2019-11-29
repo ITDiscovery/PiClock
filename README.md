@@ -5,7 +5,74 @@ Use case to provide an API call to retrieve current data from a raspberry pi wea
 
 Done: weewx device for RPi raw sensors at https://github.com/jardiamj/BYOWS_RPi
 
-1. Does weewx supply a json xfer agent. If not, we'll need to write one and contribute it.
-2. Does weewx supply a xfer agent to AWEKAS. If it requires an external address, an additional feature will be needed to push via json to AWEKAS.
-3. Get data from AWEKAS to the PiClock. This will need to be added.
-4. Write json xfer agent for Raspberry Pi foundation version of weather station.
+1. Weewx does not supply a xfer agent, so write one using a common RESTful scheme (preferably a standard used by AWEKAS, so you can point PiClock locally or to AWEKAS). It should pull from weewx database.
+
+Call to 127.0.0.1/data/1.0/weather?=local
+
+API Response:
+
+{"coord": { "lon": -139,"lat": 35},
+  "main": {
+    "temp": 289.92,
+    "pressure": 1009,
+    "humidity": 92,
+    "temp_min": 288.71,
+    "temp_max": 290.93
+  },
+  "wind": {
+    "speed": 0.47,
+    "deg": 107.538
+  },
+  "timezone": 32400,
+  "id": 1851632,
+  "name": "Shuzenji",
+  "cod": 200
+}
+
+
+
+Parameters:
+
+coord
+coord.lon City geo location, longitude
+coord.lat City geo location, latitude
+weather (more info Weather condition codes)
+weather.id Weather condition id
+weather.main Group of weather parameters (Rain, Snow, Extreme etc.)
+weather.description Weather condition within the group
+weather.icon Weather icon id
+base Internal parameter
+main
+main.temp Temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+main.pressure Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
+main.humidity Humidity, %
+main.temp_min Minimum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+main.temp_max Maximum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
+main.sea_level Atmospheric pressure on the sea level, hPa
+main.grnd_level Atmospheric pressure on the ground level, hPa
+wind
+wind.speed Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
+wind.deg Wind direction, degrees (meteorological)
+clouds
+clouds.all Cloudiness, %
+rain
+rain.1h Rain volume for the last 1 hour, mm
+rain.3h Rain volume for the last 3 hours, mm
+snow
+snow.1h Snow volume for the last 1 hour, mm
+snow.3h Snow volume for the last 3 hours, mm
+dt Time of data calculation, unix, UTC
+sys
+sys.type Internal parameter
+sys.id Internal parameter
+sys.message Internal parameter
+sys.country Country code (GB, JP etc.)
+sys.sunrise Sunrise time, unix, UTC
+sys.sunset Sunset time, unix, UTC
+timezone Shift in seconds from UTC
+id City ID
+name City name
+
+
+2. Weewx does send to AWEKAS, so done.
+3. Write a reciever for PiClock that will read the RESTful scheme from AWEKAS.

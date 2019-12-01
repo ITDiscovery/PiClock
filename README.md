@@ -11,14 +11,14 @@ Call to 127.0.0.1/data/1.0/weather?=local
 
 API Response:
 
-{"coord": { "lon": -139,"lat": 35},  
-  "main": {  
-    "temp": 289.92,
-    "pressure": 1009,
-    "humidity": 92,
-    "temp_min": 288.71,
-    "temp_max": 290.93
-  },
+{"coord": { "lon": -139,"lat": 35},  \
+  "main": {  \
+    "temp": 289.92, \
+    "pressure": 1009, \
+    "humidity": 92, \
+    "temp_min": 288.71, \
+    "temp_max": 290.93 \
+  }, \
   "wind": {
     "speed": 0.47,
     "deg": 107.538
@@ -33,7 +33,7 @@ API Response:
 
 Parameters:
 
-coord /n
+coord \
 coord.lon City geo location, longitude
 coord.lat City geo location, latitude
 weather (more info Weather condition codes)

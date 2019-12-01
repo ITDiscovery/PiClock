@@ -33,7 +33,7 @@ API Response:
 
 Parameters:
 
-coord \n
+coord /n
 coord.lon City geo location, longitude
 coord.lat City geo location, latitude
 weather (more info Weather condition codes)

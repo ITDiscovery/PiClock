@@ -71,36 +71,36 @@ sys.sunrise Sunrise time, unix, UTC \
 sys.sunset Sunset time, unix, UTC \
 timezone Shift in seconds from UTC \
 id City ID \
-name City name \
+name City name 
 
-Weewx archive table schema:
-`dateTime` INTEGER NOT NULL UNIQUE PRIMARY KEY
-`usUnits` INTEGER NOT NULL
-`interval` INTEGER NOT NULL
-`barometer` REAL
-`pressure` REAL
-`altimeter` REAL
-`inTemp` REAL
-`outTemp` REAL
-`inHumidity` REAL
-`outHumidity` REAL
-`windSpeed` REAL
-`windDir` REAL
-`windGust` REAL
-`windGustDir` REAL
-`rainRate` REAL
-`rain` REAL
-`dewpoint` REAL
-`windchill` REAL
-`heatindex` REAL
-`ET` REAL
-`radiation` REAL
-`UV` REAL
-`extraTemp1` REAL
-`extraTemp2` REAL
-`extraTemp3` REAL
-`soilTemp1` REAL
-`soilTemp2` REAL
+Weewx archive table schema: \
+`dateTime` INTEGER NOT NULL UNIQUE PRIMARY KEY \
+`usUnits` INTEGER NOT NULL \
+`interval` INTEGER NOT NULL \
+`barometer` REAL \
+`pressure` REAL \
+`altimeter` REAL \
+`inTemp` REAL \
+`outTemp` REAL \
+`inHumidity` REAL \
+`outHumidity` REAL \
+`windSpeed` REAL \
+`windDir` REAL \
+`windGust` REAL \
+`windGustDir` REAL \
+`rainRate` REAL \
+`rain` REAL \
+`dewpoint` REAL \
+`windchill` REAL \
+`heatindex` REAL \
+`ET` REAL \
+`radiation` REAL \
+`UV` REAL \
+`extraTemp1` REAL \
+`extraTemp2` REAL \
+`extraTemp3` REAL \
+`soilTemp1` REAL \
+`soilTemp2` REAL \
 `soilTemp3` REAL
 `soilTemp4` REAL
 `leafTemp1` REAL

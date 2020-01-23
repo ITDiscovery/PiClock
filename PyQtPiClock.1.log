@@ -1,0 +1,393 @@
+map base url: http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDLSRAHbL6jYQSvlBarUqB0dtZPemBY43M&center=32.826673,-97.232324&zoom=5&size=283x234&maptype=hybrid
+map base url: http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDLSRAHbL6jYQSvlBarUqB0dtZPemBY43M&center=32.826673,-97.232324&zoom=10&size=283x234&maptype=hybrid
+map base url: http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDLSRAHbL6jYQSvlBarUqB0dtZPemBY43M&center=32.826673,-97.232324&zoom=5&size=330x298&maptype=hybrid
+map base url: http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDLSRAHbL6jYQSvlBarUqB0dtZPemBY43M&center=32.826673,-97.232324&zoom=10&size=330x298&maptype=hybrid
+map base url: http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyDLSRAHbL6jYQSvlBarUqB0dtZPemBY43M&center=32.826673,-97.232324&zoom=8&size=613x298&maptype=hybrid
+getting current and forecast:Sat Nov  9 14:27:44 2019
+https://api.darksky.net/forecast/1d2469965b2487b54b6d6cc43f2d368b/32.826673,-97.232324?units=us&lang=en&r=0.879702454533
+wxstart for radar1
+wxstart for radar2
+get... 1573327800 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573327800//256/10/234/412/8/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573327800//256/10/235/412/8/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573327800//256/10/234/413/8/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573327800//256/10/235/413/8/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573328400//256/10/234/412/8/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573328400//256/10/235/412/8/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573328400//256/10/234/413/8/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573328400//256/10/235/413/8/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+get... 1573329000 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573329000//256/10/234/412/8/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573329000//256/10/235/412/8/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573329000//256/10/234/413/8/1_1.png
+get... 1573327800 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573327800//256/5/6/12/6/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573329000//256/10/235/413/8/1_1.png
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573327800//256/5/7/12/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+get... 1573329000 radar2
+get... 1573329600 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573329600//256/10/234/412/8/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573327800//256/5/6/13/6/1_1.png
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573327800//256/5/7/13/6/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573329600//256/10/235/412/8/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573328400//256/5/6/12/6/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573329600//256/10/234/413/8/1_1.png
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573328400//256/5/7/12/6/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573329600//256/10/235/413/8/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573328400//256/5/6/13/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+get... 1573329000 radar2
+get... 1573329600 radar2
+get... 1573330200 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573330200//256/10/234/412/8/1_1.png
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573328400//256/5/7/13/6/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573330200//256/10/235/412/8/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+get... 1573329000 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573329000//256/5/6/12/6/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573330200//256/10/234/413/8/1_1.png
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573329000//256/5/7/12/6/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573330200//256/10/235/413/8/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573329000//256/5/6/13/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+get... 1573329000 radar2
+get... 1573329600 radar2
+get... 1573330200 radar2
+get... 1573330800 radar2
+radar2 0 https://tilecache.rainviewer.com/v2/radar/1573330800//256/10/234/412/8/1_1.png
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573329000//256/5/7/13/6/1_1.png
+getTilesReply 0
+radar2 1 https://tilecache.rainviewer.com/v2/radar/1573330800//256/10/235/412/8/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+get... 1573329000 radar1
+get... 1573329600 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573329600//256/5/6/12/6/1_1.png
+getTilesReply 1
+radar2 2 https://tilecache.rainviewer.com/v2/radar/1573330800//256/10/234/413/8/1_1.png
+wxstart for radar3
+wxstart for radar4
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573329600//256/5/7/12/6/1_1.png
+getTilesReply 2
+radar2 3 https://tilecache.rainviewer.com/v2/radar/1573330800//256/10/235/413/8/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573329600//256/5/6/13/6/1_1.png
+get... 1573327800 radar3
+radar3 0 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/13/24/6/1_1.png
+get... 1573327800 radar4
+radar4 0 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/469/824/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar2
+get... 1573328400 radar2
+get... 1573329000 radar2
+get... 1573329600 radar2
+get... 1573330200 radar2
+get... 1573330800 radar2
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573329600//256/5/7/13/6/1_1.png
+getTilesReply 0
+radar3 1 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/14/24/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+get... 1573329000 radar1
+get... 1573329600 radar1
+get... 1573330200 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573330200//256/5/6/12/6/1_1.png
+getTilesReply 1
+radar3 2 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/15/24/6/1_1.png
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573330200//256/5/7/12/6/1_1.png
+getTilesReply 2
+radar3 3 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/16/24/6/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573330200//256/5/6/13/6/1_1.png
+getTilesReply 3
+radar3 4 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/13/25/6/1_1.png
+getTilesReply 0
+radar4 1 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/470/824/6/1_1.png
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573330200//256/5/7/13/6/1_1.png
+getTilesReply 4
+radar3 5 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/14/25/6/1_1.png
+getTilesReply 1
+radar4 2 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/471/824/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+get... 1573329000 radar1
+get... 1573329600 radar1
+get... 1573330200 radar1
+get... 1573330800 radar1
+radar1 0 https://tilecache.rainviewer.com/v2/radar/1573330800//256/5/6/12/6/1_1.png
+getTilesReply 5
+radar3 6 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/15/25/6/1_1.png
+getTilesReply 2
+radar4 3 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/472/824/6/1_1.png
+getTilesReply 0
+radar1 1 https://tilecache.rainviewer.com/v2/radar/1573330800//256/5/7/12/6/1_1.png
+getTilesReply 6
+radar3 7 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/16/25/6/1_1.png
+getTilesReply 3
+radar4 4 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/469/825/6/1_1.png
+getTilesReply 1
+radar1 2 https://tilecache.rainviewer.com/v2/radar/1573330800//256/5/6/13/6/1_1.png
+getTilesReply 7
+radar3 8 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/13/26/6/1_1.png
+getTilesReply 4
+radar4 5 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/470/825/6/1_1.png
+getTilesReply 2
+radar1 3 https://tilecache.rainviewer.com/v2/radar/1573330800//256/5/7/13/6/1_1.png
+getTilesReply 8
+radar3 9 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/14/26/6/1_1.png
+getTilesReply 5
+radar4 6 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/471/825/6/1_1.png
+getTilesReply 3
+get... 1573327800 radar1
+get... 1573328400 radar1
+get... 1573329000 radar1
+get... 1573329600 radar1
+get... 1573330200 radar1
+get... 1573330800 radar1
+getTilesReply 9
+radar3 10 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/15/26/6/1_1.png
+getTilesReply 6
+radar4 7 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/472/825/6/1_1.png
+getTilesReply 10
+radar3 11 https://tilecache.rainviewer.com/v2/radar/1573327800//256/6/16/26/6/1_1.png
+getTilesReply 7
+radar4 8 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/469/826/6/1_1.png
+wxstop for radar3
+wxstop for radar4
+wxstart for radar5
+getTilesReply 11
+get... 1573327800 radar3
+get... 1573328400 radar3
+radar3 0 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/13/24/6/1_1.png
+getTilesReply 8
+radar4 9 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/470/826/6/1_1.png
+get... 1573327800 radar5
+radar5 0 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/115/205/6/1_1.png
+getTilesReply 0
+radar3 1 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/14/24/6/1_1.png
+getTilesReply 9
+radar4 10 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/471/826/6/1_1.png
+getTilesReply 0
+radar5 1 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/116/205/6/1_1.png
+getTilesReply 1
+radar3 2 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/15/24/6/1_1.png
+getTilesReply 10
+radar4 11 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/472/826/6/1_1.png
+getTilesReply 1
+radar5 2 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/117/205/6/1_1.png
+getTilesReply 2
+radar3 3 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/16/24/6/1_1.png
+getTilesReply 11
+radar4 12 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/469/827/6/1_1.png
+getTilesReply 2
+radar5 3 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/118/205/6/1_1.png
+getTilesReply 3
+radar3 4 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/13/25/6/1_1.png
+getTilesReply 3
+radar5 4 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/119/205/6/1_1.png
+getTilesReply 12
+radar4 13 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/470/827/6/1_1.png
+getTilesReply 4
+radar3 5 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/14/25/6/1_1.png
+getTilesReply 4
+radar5 5 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/120/205/6/1_1.png
+getTilesReply 13
+radar4 14 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/471/827/6/1_1.png
+getTilesReply 5
+radar3 6 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/15/25/6/1_1.png
+getTilesReply 5
+radar5 6 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/115/206/6/1_1.png
+getTilesReply 14
+radar4 15 https://tilecache.rainviewer.com/v2/radar/1573327800//256/11/472/827/6/1_1.png
+getTilesReply 6
+radar3 7 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/16/25/6/1_1.png
+getTilesReply 6
+radar5 7 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/116/206/6/1_1.png
+getTilesReply 15
+get... 1573327800 radar4
+get... 1573328400 radar4
+radar4 0 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/469/824/6/1_1.png
+getTilesReply 7
+radar3 8 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/13/26/6/1_1.png
+getTilesReply 7
+radar5 8 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/117/206/6/1_1.png
+getTilesReply 0
+radar4 1 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/470/824/6/1_1.png
+getTilesReply 8
+radar3 9 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/14/26/6/1_1.png
+getTilesReply 8
+radar5 9 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/118/206/6/1_1.png
+getTilesReply 1
+radar4 2 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/471/824/6/1_1.png
+getTilesReply 9
+radar3 10 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/15/26/6/1_1.png
+getTilesReply 9
+radar5 10 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/119/206/6/1_1.png
+getTilesReply 2
+radar4 3 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/472/824/6/1_1.png
+getTilesReply 10
+radar3 11 https://tilecache.rainviewer.com/v2/radar/1573328400//256/6/16/26/6/1_1.png
+getTilesReply 10
+radar5 11 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/120/206/6/1_1.png
+getTilesReply 11
+get... 1573327800 radar3
+get... 1573328400 radar3
+get... 1573329000 radar3
+radar3 0 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/13/24/6/1_1.png
+getTilesReply 3
+radar4 4 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/469/825/6/1_1.png
+getTilesReply 11
+radar5 12 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/115/207/6/1_1.png
+getTilesReply 0
+radar3 1 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/14/24/6/1_1.png
+getTilesReply 4
+radar4 5 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/470/825/6/1_1.png
+getTilesReply 12
+radar5 13 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/116/207/6/1_1.png
+wxstop for radar5
+getTilesReply 1
+radar3 2 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/15/24/6/1_1.png
+getTilesReply 5
+radar4 6 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/471/825/6/1_1.png
+getTilesReply 13
+radar5 14 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/117/207/6/1_1.png
+getTilesReply 2
+radar3 3 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/16/24/6/1_1.png
+getTilesReply 6
+radar4 7 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/472/825/6/1_1.png
+getTilesReply 14
+radar5 15 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/118/207/6/1_1.png
+getTilesReply 3
+radar3 4 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/13/25/6/1_1.png
+getTilesReply 15
+radar5 16 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/119/207/6/1_1.png
+getTilesReply 7
+radar4 8 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/469/826/6/1_1.png
+getTilesReply 4
+radar3 5 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/14/25/6/1_1.png
+getTilesReply 16
+radar5 17 https://tilecache.rainviewer.com/v2/radar/1573327800//256/9/120/207/6/1_1.png
+getTilesReply 8
+radar4 9 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/470/826/6/1_1.png
+getTilesReply 5
+radar3 6 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/15/25/6/1_1.png
+getTilesReply 9
+radar4 10 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/471/826/6/1_1.png
+getTilesReply 17
+get... 1573327800 radar5
+get... 1573328400 radar5
+radar5 0 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/115/205/6/1_1.png
+getTilesReply 6
+radar3 7 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/16/25/6/1_1.png
+getTilesReply 10
+radar4 11 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/472/826/6/1_1.png
+getTilesReply 7
+radar3 8 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/13/26/6/1_1.png
+getTilesReply 0
+radar5 1 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/116/205/6/1_1.png
+getTilesReply 11
+radar4 12 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/469/827/6/1_1.png
+getTilesReply 8
+radar3 9 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/14/26/6/1_1.png
+getTilesReply 1
+radar5 2 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/117/205/6/1_1.png
+getTilesReply 12
+radar4 13 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/470/827/6/1_1.png
+getTilesReply 9
+radar3 10 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/15/26/6/1_1.png
+getTilesReply 2
+radar5 3 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/118/205/6/1_1.png
+getTilesReply 13
+radar4 14 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/471/827/6/1_1.png
+getTilesReply 10
+radar3 11 https://tilecache.rainviewer.com/v2/radar/1573329000//256/6/16/26/6/1_1.png
+getTilesReply 3
+radar5 4 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/119/205/6/1_1.png
+getTilesReply 14
+radar4 15 https://tilecache.rainviewer.com/v2/radar/1573328400//256/11/472/827/6/1_1.png
+getTilesReply 11
+get... 1573327800 radar3
+get... 1573328400 radar3
+get... 1573329000 radar3
+get... 1573329600 radar3
+radar3 0 https://tilecache.rainviewer.com/v2/radar/1573329600//256/6/13/24/6/1_1.png
+getTilesReply 4
+radar5 5 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/120/205/6/1_1.png
+getTilesReply 15
+get... 1573327800 radar4
+get... 1573328400 radar4
+get... 1573329000 radar4
+radar4 0 https://tilecache.rainviewer.com/v2/radar/1573329000//256/11/469/824/6/1_1.png
+getTilesReply 0
+radar3 1 https://tilecache.rainviewer.com/v2/radar/1573329600//256/6/14/24/6/1_1.png
+getTilesReply 5
+radar5 6 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/115/206/6/1_1.png
+getTilesReply 0
+radar4 1 https://tilecache.rainviewer.com/v2/radar/1573329000//256/11/470/824/6/1_1.png
+getTilesReply 1
+radar3 2 https://tilecache.rainviewer.com/v2/radar/1573329600//256/6/15/24/6/1_1.png
+getTilesReply 6
+radar5 7 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/116/206/6/1_1.png
+getTilesReply 1
+radar4 2 https://tilecache.rainviewer.com/v2/radar/1573329000//256/11/471/824/6/1_1.png
+getTilesReply 2
+radar3 3 https://tilecache.rainviewer.com/v2/radar/1573329600//256/6/16/24/6/1_1.png
+getTilesReply 7
+radar5 8 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/117/206/6/1_1.png
+getTilesReply 2
+radar4 3 https://tilecache.rainviewer.com/v2/radar/1573329000//256/11/472/824/6/1_1.png
+getTilesReply 3
+radar3 4 https://tilecache.rainviewer.com/v2/radar/1573329600//256/6/13/25/6/1_1.png
+getTilesReply 8
+radar5 9 https://tilecache.rainviewer.com/v2/radar/1573328400//256/9/118/206/6/1_1.png
+getTilesReply 3
+radar4 4 https://tilecache.rainviewer.com/v2/radar/1573329000//256/11/469/825/6/1_1.png

@@ -1,0 +1,17 @@
+[{'air_pressure': 1007.37,
+  'air_quality': 74.88,
+  'ambient_temp': 28.25,
+  'created_by': 'ACRG_ROOF',
+  'created_on': '2017-08-23T14:55:37Z',
+  'ground_temp': 29.94,
+  'humidity': 43.84,
+  'id': 5483828,
+  'rainfall': 0,
+  'reading_timestamp': '2017-08-23T14:55:37Z',
+  'updated_by': 'ACRG_ROOF',
+  'updated_on': '2017-08-23T19:13:10.578Z',
+  'weather_stn_id': 1648902,
+  'wind_direction': 358.05,
+  'wind_gust_speed': 14.89,
+  'wind_speed': 0}]
+

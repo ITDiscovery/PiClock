@@ -1,0 +1,4 @@
+  File "PyQtPiClock.py", line 38
+    import ../ApiKeys                                              # NOQA
+           ^
+SyntaxError: invalid syntax

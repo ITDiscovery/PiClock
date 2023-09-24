@@ -32,3 +32,27 @@ keyPressEvent captures keypress/GPIO events:
 - Space/Right Arrow = Next Frame
 - Left Arrow = Previous Frame
 - F9 Hide/Show
+
+## frame1 contains the primary clock face in the center, quick-check conditions and radars on the left and the forecast on the right
+squares1
+squares2
+clockface
+radar1rect
+radar2rect
+datex
+datex2
+
+## frame2 contains large radars and summary conditions and time on the bottom
+radar3rect
+radar4rect
+datex2
+attribution2
+wxicon2
+wxdescr2
+temper2
+
+## frame3 contains a full screen radar Inside Conditions and WxStation Conditions
+radar5rect
+attribution3
+bottom3in
+bottom3out

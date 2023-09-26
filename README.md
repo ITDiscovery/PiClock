@@ -41,7 +41,7 @@ wind
 wind2
 bottom
 squares1 - bottom left, contains radar1rect and radar2rect
-squares2 - right side, contains 
+squares2 - right side, contains subwindows wx and day
 clockface - upper center
 datex - top of screen
 

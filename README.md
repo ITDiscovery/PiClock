@@ -34,6 +34,12 @@ keyPressEvent captures keypress/GPIO events:
 - F9 Hide/Show
 
 ## frame1 contains the primary clock face in the center, quick-check conditions and radars on the left and the forecast on the right
+temper
+press
+humidity
+wind
+wind2
+bottom
 squares1 - bottom left, contains radar1rect and radar2rect
 squares2 - right side, contains 
 clockface - upper center
@@ -47,9 +53,12 @@ attribution2
 wxicon2
 wxdescr2
 temper2
+bottom2
 
 ## frame3 contains a full screen radar Inside Conditions and WxStation Conditions
 radar5rect
+bottom3in
+bottom3out
 attribution3
 bottom3in
 bottom3out

@@ -1,0 +1,49 @@
+{
+  "api_keys": {
+    "openweathermap": "f4eb44c5bb91f64bedcafa1c6e924165",
+    "newsapi": "38c1012a47a345949e85e395dd5dc22a"
+  },
+  "debug": true,
+  "location": {
+    "latitude": 42.9881,
+    "longitude": -85.0689,
+    "radar_station": "KGRR",
+    "nws_office": "GRR"
+  },
+  "display": {
+    "background_color": "blue",
+    "font_color": "white",
+    "units": "imperial",
+    "news_country": "us",
+    "screen": {
+      "width": 800,
+      "height": 480,
+      "start_x": 0,
+      "start_y": 0
+    }
+  },
+  "hardware": {
+    "enable": true,
+    "bme280_i2c_address": "0x76",
+    "poll_interval_ms": 2000,
+    "buttons": {
+      "next_frame": 5,
+      "play_audio": 6,
+      "reboot": 26
+    }
+  },
+  "audio": {
+    "noaa_stream_url": null,
+    "aplay_device": "default",
+    "audio_volume_percent": 90,
+    "espeak_voice": "mb-us1"
+  },
+  "radar_frame": {
+    "url": "https://radar.weather.gov/ridge/standard/KGRR_loop.gif",
+    "refresh_ms": 600000
+  },
+  "map_frame": {
+    "url": "https://radar.weather.gov/ridge/standard/CONUS_loop.gif",
+    "refresh_ms": 300000
+  }
+}

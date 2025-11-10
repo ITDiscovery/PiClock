@@ -18,7 +18,7 @@ This clock was originally based on the work from **`https://github.com/n0bel/PiC
 * [ ] **News Ticker:** Add a scrolling news headline ticker.
 * [ ] **GPIO Control:** Implement logic for three external pushbuttons to change modes.
 * [ ] **Error Handling:** Add robust error handling for network issues and API failures.
-
+* [ ] **Weewx Integration:** If available, add data gathering from WeeWx weather station.
 
 
 ## Features (Use Cases)
@@ -92,12 +92,12 @@ wget [http://ftp.debian.org/debian/pool/non-free/m/mbrola/mbrola_3.01+repack2-5_
 wget [http://ftp.debian.org/debian/pool/non-free/m/mbrola-us1/mbrola-us1_0.3+repack2-5_all.deb](http://ftp.debian.org/debian/pool/non-free/m/mbrola-us1/mbrola-us1_0.3+repack2-5_all.deb)
 ```
 
-2. Install the packages using dpkg:
+2. Install the packages using `dpkg`:
 ```bash
 sudo dpkg -i mbrola_3.01+repack2-5_all.deb mbrola-us1_0.3+repack2-5_all.deb
 ```
 
-3. Register the voice with espeak-ng by creating a config file:
+3. Register the voice with `espeak-ng` by creating a config file:
 ```bash
 sudo nano /usr/share/espeak-ng-data/mbrola_voices
 ```
@@ -118,7 +118,7 @@ cd PiClock
 ```
 
 #### Step 3b: Install Python Libraries (pip)
-Create a requirements.txt file for the Python dependencies.
+Create a `requirements.txt` file for the Python dependencies.
 
 1. Create the file
 ```bash3
@@ -135,7 +135,7 @@ pip install -r requirements.txt
 ```
 
 #### Step 3c: Create Configuration File
-Create your **config.json file. You can copy the template below.
+Create your `config.json file`. You can copy the template below.
 
 ```bash
 nano config.json
@@ -237,3 +237,82 @@ To make the clock start automatically when the Pi boots up:
 6.  Save and exit.
 
 Now, reboot your Pi (`sudo reboot`), and the clock should launch automatically.
+
+## Application Architecture
+
+This project uses a modular, service-oriented architecture based on PyQt5's **signals and slots** mechanism. The core principle is a complete **Separation of Concerns**, which makes the application stable, easy to debug, and simple to extend.
+
+The application is broken into three main parts:
+
+1.  **The UI (`ui/WeatherWindow.py`)**
+    This is the "dumb" front-end. It is responsible *only* for displaying data. It creates all the labels, image containers, and multiple screens (using a `QStackedWidget`). It has no knowledge of *how* to get data. It only has public "slots" (like `on_weather_ready`) that wait to be told what to display.
+
+2.  **The Services (`core/`)**
+    These are the background workers. Each service is a `QObject` that runs on its own timers. It handles one job (e.g., fetching weather, polling hardware) and has no knowledge of the UI. When it has new data, it emits a "signal" (e.g., `weather_data_ready`).
+
+3.  **The Conductor (`main.py`)**
+    This is the central entry point that acts as the "conductor." Its only job is to:
+    * Load the `config.json`.
+    * Create one instance of the UI (`WeatherWindow`).
+    * Create one instance of *each* service.
+    * Connect the **signals** from the services to the **slots** in the UI.
+    * Start all the services and run the application.
+
+This design means if the NWS API changes, we only need to edit `core/WeatherService.py`. The rest of the application is completely unaffected.
+
+## Code Summary
+
+Here is a summary of each file in the project.
+
+### `main.py`
+This is the main entry point for the application. It contains no logic. It simply initializes all the service classes and the UI class, and then connects their signals and slots to orchestrate the flow of data.
+
+### `config.json`
+The central settings file for the entire application. It stores all API keys, hardware pin numbers, screen resolution, locations, and image URLs. This allows for complete configuration without touching any Python code.
+
+### `config_utils.py`
+A simple, safe utility to load the `config.json` file. It checks for file-not-found errors and invalid JSON, exiting gracefully if the config is missing or broken.
+
+### `ui/WeatherWindow.py`
+This is the *only* file that contains Qt5 UI code (widgets, layouts, etc.).
+* It creates all visual elements (labels, images).
+* It manages the `QStackedWidget` to switch between the "local radar" frame and the "national map" frame.
+* It defines all the public **slots** (e.g., `@pyqtSlot(dict) def on_weather_ready(self, data):`) that the services send data to.
+* It handles the logic for the animated radar (`QMovie`) by loading the GIFs that the services provide.
+
+### `core/WeatherService.py`
+Handles all weather data fetching.
+* Fetches current conditions from **OpenWeatherMap** (for the visual display).
+* Fetches the detailed, human-written **NWS Zone Forecast Product (ZFP)** for the specified NWS office and zone.
+* Includes a robust fallback to use OWM's forecast data if the NWS fetch fails.
+* Emits a `weather_data_ready` signal with a dictionary of all the data.
+
+### `core/MapService.py`
+A generic, reusable service for fetching animated images.
+* Reads a URL and refresh timer from its config.
+* Downloads the file, handling `User-Agent` headers to avoid being blocked by servers.
+* Checks if the downloaded file is a valid `image/gif`.
+* Saves the GIF to a local temporary file (e.g., `_radar.gif`).
+* Emits a `map_file_ready` signal with the file path.
+* *(Note: `main.py` creates two instances of this service: one for the local radar and one for the national map.)*
+
+### `core/NewsService.py`
+Manages the scrolling news ticker at the bottom of the screen.
+* Fetches headlines from the **NewsAPI**.
+* Manages two internal timers: one to fetch new headlines periodically and one to "scroll" the text.
+* Emits a `news_ticker_updated` signal with the new text string on every scroll tick.
+
+### `core/HardwareService.py`
+Manages all physical hardware on the Raspberry Pi.
+* Safely imports `RPi.GPIO` and `bme280` so the app can run on a PC (in debug mode) without crashing.
+* Polls the **BME280** sensor and emits `bme_data_ready` with local temp/humidity.
+* Polls the GPIO buttons, applies debouncing, and emits a `button_pressed` signal with the *action name* (e.g., "next_frame") from the config.
+
+### `core/TTSService.py`
+Manages all text-to-speech audio.
+* Provides a public `speak(text)` slot that acts as a **play/stop toggle**.
+* Executes the `espeak-ng | aplay` command in a subprocess.
+* Uses the `aplay_device` and `espeak_voice` from `config.json` to ensure audio works correctly for the `pi` user.
+* Emits an `audio_state_changed(bool)` signal so the UI can show/hide the "o)))" speaker icon.
+
+

@@ -7,8 +7,8 @@
   "location": {
     "latitude": 42.9881,
     "longitude": -85.0689,
-    "radar_station": "KGRR",
-    "nws_office": "GRR"
+    "nws_office": "GRR",
+    "nws_zone_id": "MIZ058"
   },
   "display": {
     "background_color": "blue",
@@ -36,7 +36,8 @@
     "noaa_stream_url": null,
     "aplay_device": "default",
     "audio_volume_percent": 90,
-    "espeak_voice": "mb-us1"
+    "espeak_voice": "mb-us1",
+    "spoken_forecast_periods": 8
   },
   "radar_frame": {
     "url": "https://radar.weather.gov/ridge/standard/KGRR_loop.gif",

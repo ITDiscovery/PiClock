@@ -12,7 +12,6 @@ class WeatherWindow(QWidget):
         self.config = config
         self.debug = self.config.get("debug", False)
         
-        # ... (Properties are unchanged) ...
         self.current_temp = 0.0
         self.current_desc = "Loading"
         self.current_spoken_forecast = "Weather data is loading."
@@ -24,17 +23,20 @@ class WeatherWindow(QWidget):
         self.screen_stack = QStackedWidget(self)
         self.main_layout.addWidget(self.screen_stack)
         
-        # --- QMovie objects ---
+        # --- QMovie objects and their persistent buffers ---
+        self.radar_buffer = QBuffer(self)
         self.radar_movie = QMovie(self)
-        self.map_movie = QMovie(self)
+        self.radar_movie.setDevice(self.radar_buffer)
         
-        # --- UPDATED: Connect frameChanged signals ---
+        self.map_buffer = QBuffer(self)
+        self.map_movie = QMovie(self)
+        self.map_movie.setDevice(self.map_buffer)
+        
+        # --- Connect QMovie error/frame signals ---
+        self.radar_movie.error.connect(self.on_radar_movie_error)
+        self.map_movie.error.connect(self.on_map_movie_error)
         self.radar_movie.frameChanged.connect(self.on_radar_frame_changed)
         self.map_movie.frameChanged.connect(self.on_map_frame_changed)
-        
-        # We can remove the error slots, they aren't firing
-        # self.radar_movie.error.connect(self.on_radar_movie_error)
-        # self.map_movie.error.connect(self.on_map_movie_error)
         
         self.frame_1 = self.create_frame_1()
         self.frame_2 = self.create_frame_2() 
@@ -65,7 +67,7 @@ class WeatherWindow(QWidget):
         self.show()
 
     def create_frame_1(self):
-        # ... (Layout setup is unchanged) ...
+        # ... (This function is unchanged)
         frame = QWidget()
         main_layout = QVBoxLayout()
         main_layout.setSpacing(0); main_layout.setContentsMargins(0, 0, 0, 0)
@@ -74,34 +76,27 @@ class WeatherWindow(QWidget):
         top_layout.setContentsMargins(0, 0, 0, 0); top_layout.setSpacing(0)
         left_column_layout = QVBoxLayout()
         left_column_layout.setContentsMargins(5, 5, 5, 5); left_column_layout.setSpacing(0)
-        
-        # ... (Left column labels are unchanged) ...
-        self.temp_label = self.create_label("", 'Arial', 48, QFont.Bold)
+        self.local_temp_label = self.create_label("", 'Arial', 18, alignment=Qt.AlignLeft | Qt.AlignVCenter)
+        self.local_humidity_label = self.create_label("", 'Arial', 18, alignment=Qt.AlignLeft | Qt.AlignVCenter)
+        self.speaker_label = self.create_label("", 'Arial', 18, alignment=Qt.AlignLeft | Qt.AlignVCenter) 
+        self.temp_label = self.create_label("", 'Arial', 48, QFont.Bold) 
         self.desc_label = self.create_label("Loading...", 'Arial', 20)
         self.time_label = self.create_label("", 'Arial', 72, QFont.Bold)
         self.date_label = self.create_label("", 'Arial', 24)
-        self.local_temp_label = self.create_label("", 'Arial', 18)
-        self.local_humidity_label = self.create_label("", 'Arial', 18)
-        left_column_layout.addWidget(self.temp_label)
-        left_column_layout.addWidget(self.desc_label)
-        left_column_layout.addStretch(1)
         left_column_layout.addWidget(self.local_temp_label)
         left_column_layout.addWidget(self.local_humidity_label)
+        left_column_layout.addWidget(self.speaker_label)
         left_column_layout.addStretch(1)
+        left_column_layout.addWidget(self.temp_label)
+        left_column_layout.addWidget(self.desc_label)
+        left_column_layout.addStretch(2)
         left_column_layout.addWidget(self.time_label)
         left_column_layout.addWidget(self.date_label)
-
-        # --- Radar Label ---
         self.radar_label = QLabel()
         self.radar_label.setAlignment(Qt.AlignCenter)
-        # --- UPDATED: Removed setScaledContents ---
-        # self.radar_label.setScaledContents(True) 
         self.radar_label.setMovie(self.radar_movie) 
-        
         top_layout.addLayout(left_column_layout, 1) 
         top_layout.addWidget(self.radar_label, 2)    
-        
-        # ... (News label is unchanged) ...
         self.news_label = QLabel("Loading news...")
         self.news_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.news_label.setFont(QFont('Arial', 18))
@@ -114,19 +109,15 @@ class WeatherWindow(QWidget):
         return frame
         
     def create_frame_2(self):
+        # ... (This function is unchanged)
         frame = QWidget()
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         frame.setLayout(layout)
-        
         self.map_label = QLabel("Loading National Map...")
         self.map_label.setAlignment(Qt.AlignCenter)
-        # --- UPDATED: Removed setScaledContents ---
-        # self.map_label.setScaledContents(True)
         self.map_label.setMovie(self.map_movie) 
-        
         layout.addWidget(self.map_label)
-        
         return frame
 
     def create_label(self, text, font_family, font_size, 
@@ -146,23 +137,48 @@ class WeatherWindow(QWidget):
         self.time_label.setText(time_text)
         self.date_label.setText(date_text)
 
-    # --- (All on_weather, on_news, on_bme slots are unchanged) ---
     @pyqtSlot(dict)
     def on_weather_ready(self, data):
+        # ... (This function is unchanged)
         self.current_temp = data.get('temperature', 0)
         self.current_desc = data.get('description', 'Error')
         self.current_spoken_forecast = data.get('spoken_forecast', 'No forecast available.')
         self.temp_label.setText(f"{self.current_temp:.0f}°")
         self.desc_label.setText(self.current_desc)
+
     @pyqtSlot(str)
     def on_weather_error(self, error_msg):
+        # ... (This function is unchanged)
         self.temp_label.setText("Err")
         self.desc_label.setText("API Error")
+
+    @pyqtSlot(str)
+    def on_radar_ready(self, file_path):
+        # ... (This function is unchanged)
+        print(f"on_radar_ready: Loading from file: {file_path}")
+        self.radar_movie.stop()
+        self.radar_movie.setFileName(file_path)
+        self.radar_movie.start()
+        self.radar_label.setPixmap(QPixmap()) 
+
+    @pyqtSlot(QPixmap)
+    def on_radar_error(self, error_pixmap):
+        # ... (This function is unchanged)
+        self.radar_movie.stop()
+        self.radar_label.setMovie(None)
+        scaled_pixmap = error_pixmap.scaled(self.radar_label.size(), 
+                                            Qt.KeepAspectRatio, 
+                                            Qt.SmoothTransformation)
+        self.radar_label.setPixmap(scaled_pixmap)
+        
     @pyqtSlot(str)
     def on_news_updated(self, ticker_string):
+        # ... (This function is unchanged)
         self.news_label.setText(ticker_string)
+
     @pyqtSlot(dict)
     def on_bme_data(self, data):
+        # ... (This function is unchanged)
         units = self.config['display']['units']
         if units == 'imperial':
             temp_f = (data.get('temperature_c', 0) * 9/5) + 32
@@ -171,35 +187,18 @@ class WeatherWindow(QWidget):
             self.local_temp_label.setText(f"Local: {data.get('temperature_c', 0):.1f}°C")
         self.local_humidity_label.setText(f"Humidity: {data.get('humidity', 0):.1f}%")
 
-    # --- (on_radar_ready and on_map_ready are unchanged) ---
-    @pyqtSlot(str)
-    def on_radar_ready(self, file_path):
-        """Slot for the local radar (Frame 1)"""
-        print(f"on_radar_ready: Loading from file: {file_path}")
-        self.radar_movie.stop()
-        self.radar_movie.setFileName(file_path)
-        self.radar_movie.start()
-        self.radar_label.setPixmap(QPixmap()) 
     @pyqtSlot(str)
     def on_map_ready(self, file_path):
-        """Slot for the national map (Frame 2)"""
+        # ... (This function is unchanged)
         print(f"on_map_ready: Loading from file: {file_path}")
         self.map_movie.stop()
         self.map_movie.setFileName(file_path)
         self.map_movie.start()
         self.map_label.setPixmap(QPixmap()) 
 
-    # --- (on_radar_error and on_map_error are unchanged) ---
-    @pyqtSlot(QPixmap)
-    def on_radar_error(self, error_pixmap):
-        self.radar_movie.stop()
-        self.radar_label.setMovie(None)
-        scaled_pixmap = error_pixmap.scaled(self.radar_label.size(), 
-                                            Qt.KeepAspectRatio, 
-                                            Qt.SmoothTransformation)
-        self.radar_label.setPixmap(scaled_pixmap)
     @pyqtSlot(QPixmap)
     def on_map_error(self, error_pixmap):
+        # ... (This function is unchanged)
         self.map_movie.stop()
         self.map_label.setMovie(None)
         scaled_pixmap = error_pixmap.scaled(self.map_label.size(), 
@@ -207,9 +206,9 @@ class WeatherWindow(QWidget):
                                             Qt.SmoothTransformation)
         self.map_label.setPixmap(scaled_pixmap)
 
-    # --- (on_button_pressed is unchanged) ---
     @pyqtSlot(str)
     def on_button_pressed(self, action):
+        # ... (This function is unchanged)
         if action == "next_frame":
             self.current_frame_index += 1
             if self.current_frame_index >= self.screen_stack.count():
@@ -217,10 +216,9 @@ class WeatherWindow(QWidget):
             self.screen_stack.setCurrentIndex(self.current_frame_index)
             print(f"Switching to frame {self.current_frame_index}")
             
-    # --- NEW: Slots to manually scale the movie frames ---
     @pyqtSlot()
     def on_radar_frame_changed(self):
-        """Manually scale and set the current frame"""
+        # ... (This function is unchanged)
         pixmap = self.radar_movie.currentPixmap()
         scaled_pixmap = pixmap.scaled(self.radar_label.size(), 
                                       Qt.KeepAspectRatio, 
@@ -229,9 +227,28 @@ class WeatherWindow(QWidget):
 
     @pyqtSlot()
     def on_map_frame_changed(self):
-        """Manually scale and set the current frame"""
+        # ... (This function is unchanged)
         pixmap = self.map_movie.currentPixmap()
         scaled_pixmap = pixmap.scaled(self.map_label.size(), 
                                       Qt.KeepAspectRatio, 
                                       Qt.SmoothTransformation)
         self.map_label.setPixmap(scaled_pixmap)
+        
+    @pyqtSlot(bool)
+    def on_audio_state_changed(self, is_playing):
+        """Shows or hides the speaker icon."""
+        if is_playing:
+            # --- UPDATED ---
+            self.speaker_label.setText("o)))")
+        else:
+            self.speaker_label.setText("")
+            
+    @pyqtSlot()
+    def on_radar_movie_error(self):
+        # ... (This function is unchanged)
+        print(f"---!!! RADAR MOVIE ERROR !!!---: {self.radar_movie.lastErrorString()}")
+
+    @pyqtSlot()
+    def on_map_movie_error(self):
+        # ... (This function is unchanged)
+        print(f"---!!! MAP MOVIE ERROR !!!---: {self.map_movie.lastErrorString()}")

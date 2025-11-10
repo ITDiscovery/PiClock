@@ -102,3 +102,138 @@ sudo dpkg -i mbrola_3.01+repack2-5_all.deb mbrola-us1_0.3+repack2-5_all.deb
 sudo nano /usr/share/espeak-ng-data/mbrola_voices
 ```
 
+4. Paste this single line into the file, then save and exit:
+```bash
+mb-us1 m en /usr/share/mbrola/us1/us1
+```
+
+### 3. Application Setup
+
+#### Step 3a: Get the Code
+
+Clone the project repository from GitHub (replace with your URL):
+```bash
+git clone [https://github.com/your-username/PiClock.git](https://github.com/your-username/PiClock.git)
+cd PiClock
+```
+
+#### Step 3b: Install Python Libraries (pip)
+Create a requirements.txt file for the Python dependencies.
+
+1. Create the file
+```bash3
+nano requirements.txt
+```
+2. Paste these two lines into the file:
+```bash
+PyQt5
+requests
+```
+3. Install the libraries
+```bash
+pip install -r requirements.txt
+```
+
+#### Step 3c: Create Configuration File
+Create your **config.json file. You can copy the template below.
+
+```bash
+nano config.json
+```
+
+Paste this text and fill in your personal API keys and location details:
+```json
+{
+  "api_keys": {
+    "openweathermap": "YOUR_OPENWEATHERMAP_API_KEY",
+    "newsapi": "YOUR_NEWSAPI_API_KEY"
+  },
+  "debug": true,
+  "location": {
+    "latitude": 42.9881,
+    "longitude": -85.0689,
+    "nws_office": "GRR",
+    "nws_zone_id": "MIZ058"
+  },
+  "display": {
+    "background_color": "black",
+    "font_color": "white",
+    "units": "imperial",
+    "news_country": "us",
+    "screen": {
+      "width": 1024,
+      "height": 600,
+      "start_x": 0,
+      "start_y": 0
+    }
+  },
+  "hardware": {
+    "enable": true,
+    "bme280_i2c_address": "0x76",
+    "poll_interval_ms": 2000,
+    "buttons": {
+      "next_frame": 5,
+      "play_audio": 6,
+      "reboot": 26
+    }
+  },
+  "audio": {
+    "aplay_device": "default",
+    "audio_volume_percent": 90,
+    "espeak_voice": "mb-us1",
+    "spoken_forecast_periods": 8
+  },
+  "radar_frame": {
+    "url": "[https://radar.weather.gov/ridge/standard/KGRR_loop.gif](https://radar.weather.gov/ridge/standard/KGRR_loop.gif)",
+    "refresh_ms": 600000
+  },
+  "map_frame": {
+    "url": "[https://radar.weather.gov/ridge/standard/CONUS_loop.gif](https://radar.weather.gov/ridge/standard/CONUS_loop.gif)",
+    "refresh_ms": 300000
+  }
+}
+```
+Note: If you skipped the MBROLA install, change espeak_voice to "en-us".
+
+### 4. Run the Application
+
+You can now run the clock! **Do not use `sudo`.**
+```bash
+python3 main.py
+```
+### 5. (Optional) Run on Boot
+
+To make the clock start automatically when the Pi boots up:
+
+1.  Create a launcher script:
+    ```bash
+    nano start_clock.sh
+    ```
+2.  Paste in the following. This waits 10 seconds for the network to connect before launching.
+    ```bash
+    #!/bin/bash
+    sleep 10
+    cd "$(dirname "$0")"
+    python3 main.py
+    ```
+3.  Save, exit, and make it executable:
+    ```bash
+    chmod +x start_clock.sh
+    ```
+4.  Create the autostart "shortcut" file:
+    ```bash
+    mkdir -p ~/.config/autostart
+    nano ~/.config/autostart/piclock.desktop
+    ```
+5.  Paste in the following (confirm the `Exec=` path is correct for your system):
+    ```ini
+    [Desktop Entry]
+    Name=PiClock
+    Comment=Raspberry Pi Weather Clock
+    Exec=/home/pi/PiClock/start_clock.sh
+    Type=Application
+    Terminal=false
+    ```
+6.  Save and exit.
+
+Now, reboot your Pi (`sudo reboot`), and the clock should launch automatically.

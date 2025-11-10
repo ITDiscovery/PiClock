@@ -38,65 +38,67 @@ This project turns a Raspberry Pi with a connected screen into a beautiful and i
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### 1. Hardware Setup
 
-This project is designed to run on a Raspberry Pi (3A+ or newer recommended) with Raspberry Pi OS.
+Before installing software, connect all your hardware:
 
-* Python 3
-* PyQt5
-* Requests library
+* **Display:** Connect your display (e.g., 1024x600) via HDMI.
+* **BME280 Sensor:** Connect the sensor to the Pi's I2C pins:
+    * `VIN` -> 3.3V (Pin 1)
+    * `GND` -> GND (Pin 9)
+    * `SDA` -> BCM 2 (Pin 3)
+    * `SCL` -> BCM 3 (Pin 5)
+* **GPIO Buttons:** Connect your three buttons. This setup uses the Pi's internal pull-up resistors, so you only need to connect each button to a GPIO pin and a Ground pin.
+    * **"Next Frame" Button:** BCM 5 (Pin 29) & GND
+    * **"Play Audio" Button:** BCM 6 (Pin 31) & GND
+    * **"Reboot" Button:** BCM 26 (Pin 37) & GND
 
-### Installation
+### 2. System Configuration & Dependencies
 
-1.  **Clone the repository:**
+This is the most critical part of the setup.
+
+#### Step 2a: Grant GPIO & Audio Permissions
+
+The app must be run by the standard `pi` user for audio to work correctly. We need to grant this user permissions to access the GPIO hardware.
+
+1.  Add the `pi` user to the `gpio` group:
     ```bash
-    git clone [https://github.com/ITDiscovery/PiClock.git](https://github.com/ITDiscovery/PiClock.git)
-    cd PiClock
+    sudo usermod -a -G gpio pi
+    ```
+2.  **You must reboot** for this change to take effect:
+    ```bash
+    sudo reboot
     ```
 
-2.  **Install the required Python libraries:**
-    ```bash
-    pip3 install PyQt5 requests
-    ```
+#### Step 2b: Install System Packages (apt)
 
-3.  **Configure the clock:**
-    * Rename the `config.json.template` file to `config.json`.
-        ```bash
-        mv config.json.template config.json
-        ```
-    * Edit `config.json` with your own API keys, location, and other preferences.
+Once rebooted, log in and install all the system-level libraries for audio, sensors, and image formats.
 
-4.  **Run the application:**
-    ```bash
-    python3 main.py
-    ```
-
-***
-## Configuration
-
-All clock settings are managed in the `config.json` file.
-
-```json
-{
-  "api_keys": {
-    "openweathermap": "YOUR_OPENWEATHERMAP_API_KEY",
-    "newsapi": "YOUR_NEWS_API_KEY"
-  },
-  "location": {
-    "latitude": 40.7128,
-    "longitude": -74.0060
-  },
-  "display": {
-    "background_color": "black",
-    "font_color": "white",
-    "units": "imperial"
-  }
-}
+```bash
+sudo apt update
+sudo apt install espeak-ng alsa-utils libqt5gui5 qt5-image-formats-plugins python3-smbus2 python3-rpi.bme280
 ```
-openweathermap: Get a free API key from OpenWeatherMap.
 
-newsapi: Get a free API key from NewsAPI.org.
+* **espeak-ng: The text-to-speech engine.
+* **alsa-utils: Provides the aplay command for audio.
+* **qt5-image-formats-plugins: CRITICAL. This adds GIF support to Qt5.
+* **python3-smbus2 & python3-rpi.bme280: Drivers for your BME280 sensor.
 
-location: Set the latitude and longitude for your weather data.
+#### Step 2c: (Optional) Install High-Quality Voice
 
-units: Use imperial for Fahrenheit or metric for Celsius.
+1. Download the **mbrola engine and the us1 voice (these are not in the default **bookworm repository):
+```bash
+wget [http://ftp.debian.org/debian/pool/non-free/m/mbrola/mbrola_3.01+repack2-5_all.deb](http://ftp.debian.org/debian/pool/non-free/m/mbrola/mbrola_3.01+repack2-5_all.deb)
+wget [http://ftp.debian.org/debian/pool/non-free/m/mbrola-us1/mbrola-us1_0.3+repack2-5_all.deb](http://ftp.debian.org/debian/pool/non-free/m/mbrola-us1/mbrola-us1_0.3+repack2-5_all.deb)
+```
+
+2. Install the packages using dpkg:
+```bash
+sudo dpkg -i mbrola_3.01+repack2-5_all.deb mbrola-us1_0.3+repack2-5_all.deb
+```
+
+3. Register the voice with espeak-ng by creating a config file:
+```bash
+sudo nano /usr/share/espeak-ng-data/mbrola_voices
+```
+

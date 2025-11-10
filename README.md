@@ -10,14 +10,14 @@ This clock was originally based on the work from **`https://github.com/n0bel/PiC
 
 ### Rebuild To-Do List
 
-* [ ] **Foundation:** Create the basic application window with Python 3 and PyQt5.
-* [ ] **Configuration:** Implement a `config.json` file for all settings and API keys.
-* [ ] **Clock:** Add the core digital clock and date display.
-* [ ] **Weather:** Fetch and display current weather conditions.
-* [ ] **Radar:** Integrate an animated weather radar map.
-* [ ] **News Ticker:** Add a scrolling news headline ticker.
-* [ ] **GPIO Control:** Implement logic for three external pushbuttons to change modes.
-* [ ] **Error Handling:** Add robust error handling for network issues and API failures.
+* [x] **Foundation:** Create the basic application window with Python 3 and PyQt5.
+* [x] **Configuration:** Implement a `config.json` file for all settings and API keys.
+* [x] **Clock:** Add the core digital clock and date display.
+* [x] **Weather:** Fetch and display current weather conditions.
+* [x] **Radar:** Integrate an animated weather radar map.
+* [x] **News Ticker:** Add a scrolling news headline ticker.
+* [x] **GPIO Control:** Implement logic for three external pushbuttons to change modes.
+* [x] **Error Handling:** Add robust error handling for network issues and API failures.
 * [ ] **Weewx Integration:** If available, add data gathering from WeeWx weather station.
 
 
